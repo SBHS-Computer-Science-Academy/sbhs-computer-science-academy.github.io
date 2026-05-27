@@ -1,5 +1,7 @@
 const BASE = "https://sbhs-computer-science-academy.github.io/";
-const IMG = "";
+// Locally the page is served under /project-showcase-home/, so sibling repos need ../
+// On GitHub Pages the site is at the org root, so no prefix is needed.
+const IMG = window.location.hostname === "localhost" ? "../" : "";
 
 // Structure: courses → years → students
 // External courses (no local student data) just have an externalUrl on the year entry.

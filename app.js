@@ -1,6 +1,9 @@
 // State: which course is open (null = home), and which year tab is active within it
 const state = { courseId: null, yearId: null };
 
+// Track running carousel intervals so we can clear them on navigation
+let _carouselIntervals = [];
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function imgFile(name) {
@@ -14,14 +17,21 @@ function initials(name) {
     : name.slice(0, 2).toUpperCase();
 }
 
-// Whether a course's every year is external (no local student data)
 function isFullyExternal(course) {
   return course.years.every(y => y.externalUrl);
 }
 
-// The year to show by default: prefer current, else first
 function defaultYear(course) {
   return (course.years.find(y => y.current) || course.years[0]).id;
+}
+
+// Fisher-Yates shuffle (in place, returns array)
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 // ── Navigation ────────────────────────────────────────────────────────────────
@@ -46,12 +56,90 @@ function switchYear(yearId) {
   render();
 }
 
+// ── Carousels ─────────────────────────────────────────────────────────────────
+
+function clearCarousels() {
+  _carouselIntervals.forEach(id => clearInterval(id));
+  _carouselIntervals = [];
+}
+
+// Collect all candidate thumbnail URLs for a course across all years
+function courseImagePool(course) {
+  const urls = [];
+  course.years.forEach(year => {
+    if (!year.students || !year.imgBase) return;
+    year.students.forEach(s => urls.push(year.imgBase + imgFile(s.name)));
+  });
+  return shuffle(urls).slice(0, 10); // cap at 10 random images
+}
+
+function initCarousels() {
+  SHOWCASE.courses.forEach(course => {
+    const el = document.querySelector(`.course-card__hero[data-carousel="${course.id}"]`);
+    if (!el) return;
+
+    const candidates = courseImagePool(course);
+    if (candidates.length === 0) return;
+
+    const loaded = [];
+    let settled = 0;
+
+    candidates.forEach(url => {
+      const img = new Image();
+      img.onload  = () => { loaded.push(url); check(); };
+      img.onerror = () => { check(); };
+      img.src = url;
+    });
+
+    function check() {
+      settled++;
+      // Start as soon as we have 2 confirmed images, or all have resolved
+      if ((loaded.length >= 2 || settled === candidates.length) && loaded.length >= 1) {
+        // Only start once
+        if (el.classList.contains("has-images")) return;
+        startCarousel(el, loaded);
+      }
+    }
+  });
+}
+
+function startCarousel(el, urls) {
+  el.classList.add("has-images");
+
+  // Inject <img> elements (hidden by default via CSS)
+  const imgs = urls.map(url => {
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "";
+    img.setAttribute("aria-hidden", "true");
+    el.appendChild(img);
+    return img;
+  });
+
+  // Show first image immediately
+  imgs[0].classList.add("active");
+  let current = 0;
+
+  const id = setInterval(() => {
+    // Skip if card is no longer in the DOM
+    if (!el.isConnected) { clearInterval(id); return; }
+
+    imgs[current].classList.remove("active");
+    current = (current + 1) % imgs.length;
+    imgs[current].classList.add("active");
+  }, 2800);
+
+  _carouselIntervals.push(id);
+}
+
 // ── Rendering ─────────────────────────────────────────────────────────────────
 
 function render() {
+  clearCarousels();
   document.getElementById("app").innerHTML =
     state.courseId ? renderCourseView() : renderHomeView();
   attachEvents();
+  if (!state.courseId) initCarousels();
 }
 
 // Home: grid of all courses
@@ -65,13 +153,20 @@ function renderCourseCard(course) {
     .map(y => `<span class="year-badge${y.current ? " year-badge--current" : ""}">${y.label}</span>`)
     .join("");
 
-  // Fully external courses: render as a plain link (or multi-year external picker)
+  // Hero area: fallback icon + carousel images injected by JS
+  const hero = `
+    <div class="course-card__hero" data-carousel="${course.id}">
+      <div class="course-card__hero-icon">
+        <i class="bi ${course.icon}"></i>
+      </div>
+    </div>`;
+
   if (isFullyExternal(course)) {
     const href = course.years.length === 1 ? course.years[0].externalUrl : "#";
     return `
       <a class="course-card course-card--external" href="${href}"
          target="_blank" rel="noopener noreferrer">
-        <div class="course-card__icon"><i class="bi ${course.icon}"></i></div>
+        ${hero}
         <div class="course-card__body">
           <div class="course-card__name">${course.name}</div>
           <div class="course-card__desc">${course.desc}</div>
@@ -85,7 +180,7 @@ function renderCourseCard(course) {
 
   return `
     <button class="course-card" data-course="${course.id}">
-      <div class="course-card__icon"><i class="bi ${course.icon}"></i></div>
+      ${hero}
       <div class="course-card__body">
         <div class="course-card__name">${course.name}</div>
         <div class="course-card__desc">${course.desc}</div>
