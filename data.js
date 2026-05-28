@@ -192,9 +192,8 @@ const SHOWCASE = {
       name: "Exploring Computer Science",
       desc: "Introductory computing concepts and creative projects",
       icon: "bi-laptop",
-      imgBase: IMG + "ECS-25-26-projects-for-showcase/images/",
       years: [
-        { id: "y2526", label: "2025–26", current: true, externalUrl: BASE + "ECS-25-26-projects-for-showcase/", 
+        { id: "y2526", label: "2025–26", imgBase: IMG + "ECS-25-26-projects-for-showcase/images/", current: true, externalUrl: BASE + "ECS-25-26-projects-for-showcase/", 
           students:[
             {name: "Alejandro",                  url: "https://codehs.com/sandbox/id/alejandro-artwork-7NrRg0"},
             {name: "Angel Del Carmen",           url:  "https://codehs.com/share/id/greeting-card-JY168g/run"},
