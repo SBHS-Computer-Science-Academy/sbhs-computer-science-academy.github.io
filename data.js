@@ -229,7 +229,7 @@ const SHOWCASE = {
           label: "2025–26", 
           imgBase: IMG + "DSW-25-26-projects-for-showcase/images/", 
           current: true, externalUrl: BASE + "DSW-25-26-projects-for-showcase/", 
-        students: [
+          students: [
           {name: "Lily and Ann",                  url: "https://ann-liliana-dsw-final-project.onrender.com/", repo: "https://github.com/burningChairs/Ann-Liliana-DSW-final-project"},
           {name: "George and Zade",               url: "https://final-project-tatx.onrender.com/", repo: "https://github.com/rogue-acid/Final-Project"},
           {name: "Juan and Kayleb",               url: "https://final-project-o075.onrender.com/", repo: "https://github.com/JuanSanchez001/Final-Project"},
