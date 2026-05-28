@@ -238,14 +238,6 @@ const SHOWCASE = {
         }
       ]
     },
-    {
-      id: "mobile",
-      name: "Mobile Development",
-      desc: "iOS app design and development",
-      icon: "bi-phone-fill",
-      years: [
-        { id: "y2425", label: "2024–25", externalUrl: BASE + "Mobile-24-25/" }
-      ]
-    }
+   
   ]
 };
