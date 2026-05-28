@@ -234,7 +234,8 @@ const SHOWCASE = {
           {name: "George and Zade",               url: "https://final-project-tatx.onrender.com/",              repo: "https://github.com/rogue-acid/Final-Project"},
           {name: "Juan and Kayleb",               url: "https://final-project-o075.onrender.com/",              repo: "https://github.com/JuanSanchez001/Final-Project"},
           {name: "Alice and Melanie",             url: "https://dsw-final-project-1-1liq.onrender.com/",        repo: "https://github.com/MelanieCampuzano/DSW-Final-Project"},
-        ]}
+        ]
+      }
       ]
     },
     {
