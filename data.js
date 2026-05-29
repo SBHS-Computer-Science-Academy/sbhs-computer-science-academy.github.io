@@ -214,7 +214,7 @@ const SHOWCASE = {
             {name: "Noe, Ceci, and Lillian",           url: "https://codehs.com/sandbox/pinkfish2684/three-worlds?collaborate=-OgJW-EtPXezE4Z6YdF9&filepath=script.js"},
             {name: "Sebastian and Christopher",     url: "https://codehs.com/sandbox/graywombat5843/pong?collaborate=-Og8HWRVDeAjIE6qFsJ-&filepath=paddle.js"},
             {name: "Sia and Alex",                   url: "https://codehs.com/sandbox/id/basic-chatbot-LzLT8S/run"},
-            {name: "Spotify",                    url: "https://codehs.com/sandbox/id/new-sandbox-program-wKddPS/run"},
+            {name: "Alexander",                    url: "https://codehs.com/sandbox/id/new-sandbox-program-wKddPS/run"},
             {name: "Valerie, Nathan, and Kitty",       url: "https://codehs.com/sandbox/violetgull7401/whack-a-beaver-1/run"},
           ]
         }
