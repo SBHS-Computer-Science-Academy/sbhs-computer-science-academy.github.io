@@ -103,7 +103,7 @@ body {
 
 /* ── Home: course section ─────────────────────────────────── */
 .course-section {
-  max-width: 1000px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 4rem;
 }
@@ -536,17 +536,56 @@ body {
 }
 
 /* ── Responsive ───────────────────────────────────────────── */
+
+/* Small screens — general spacing */
 @media (max-width: 600px) {
   .hero { padding: 2.75rem 1rem 2.5rem; }
   .course-section { padding: 1.75rem 1rem 3rem; }
   .course-view { padding: 1.5rem 1rem 3rem; }
   .breadcrumb-bar { padding: .7rem 1rem; }
-  .course-grid { grid-template-columns: 1fr 1fr; }
-  .student-grid { grid-template-columns: 1fr 1fr; }
   .course-header__title { font-size: 1.2rem; }
 }
 
-@media (max-width: 380px) {
+/* Portrait orientation: let auto-fill decide columns;
+   enforce 2-col floor on very small screens */
+@media (orientation: portrait) and (max-width: 500px) {
+  .course-grid { grid-template-columns: 1fr 1fr; }
+  .student-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (orientation: portrait) and (max-width: 360px) {
   .course-grid { grid-template-columns: 1fr; }
   .student-grid { grid-template-columns: 1fr; }
+}
+
+/* Landscape orientation on a phone (tall-enough desktop windows unaffected).
+   Cards flip to horizontal: thumbnail on the left, text on the right. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .hero { padding: 1.25rem 1rem 1rem; }
+  .hero h1 { font-size: 1.4rem; margin-bottom: .25rem; }
+  .hero p { font-size: .85rem; }
+  .course-section { padding: 1rem 1rem 1.5rem; }
+
+  .course-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Horizontal card layout */
+  .course-card {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .course-card__hero {
+    width: 130px;
+    aspect-ratio: auto;   /* height driven by card body */
+    flex-shrink: 0;
+  }
+  .course-card__body {
+    padding: .6rem .85rem .75rem;
+  }
+  .course-card__desc {
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
