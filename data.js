@@ -150,6 +150,7 @@ const SHOWCASE = {
         {
           id: "y2425",
           label: "2024–25",
+          current: true,
           imgBase: IMG + "APCS-24-25-projects-for-showcase/images/",
           students: [
             { name: "Adrian",               url: "https://codehs.com/sandbox/id/new-sandbox-program-ph4yDG" },
